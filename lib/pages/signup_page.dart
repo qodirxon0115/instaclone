@@ -30,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
       Utils.fireToast("Password and confirm password does not match");
       return;
     }
-    Navigator.pushReplacementNamed(context, SignInPage.id);
+    Navigator.pushReplacementNamed(context, HomePage.id);
   }
 
 
@@ -138,7 +138,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
 
                   GestureDetector(
-                    onTap: _doSignUp(),
+                    onTap:(){
+                      _doSignUp();
+                    },
                     child:  Container(
                         margin: const EdgeInsets.only(top: 10),
                         height: 50,

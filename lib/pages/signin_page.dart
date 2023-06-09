@@ -88,7 +88,9 @@ class _SignInPageState extends State<SignInPage> {
                   ),
 
                   GestureDetector(
-                    onTap: _doSignIn(),
+                    onTap:(){
+                      _doSignIn();
+                    },
                     child:  Container(
                       margin: const EdgeInsets.only(top: 10),
                       height: 50,
