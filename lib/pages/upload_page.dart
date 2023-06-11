@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadPage extends StatefulWidget {
-  const UploadPage({Key? key}) : super(key: key);
+  final PageController? pageController;
+  const UploadPage({Key? key, this.pageController}) : super(key: key);
 
   @override
   State<UploadPage> createState() => _UploadPageState();
@@ -18,12 +19,70 @@ class _UploadPageState extends State<UploadPage> {
   final ImagePicker picker = ImagePicker();
   File? image;
 
+  uploadNewPost(){
+    String caption = captionController.text.toString().trim();
+    if(caption.isEmpty) return;
+    if(image == null) return;
+    moveToFeed();
+  }
+
+  moveToFeed() {
+    setState(() {
+      isLoading = false;
+    });
+    captionController.text = "";
+    image = null;
+    widget.pageController!.animateToPage(0,
+        duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
+  }
+
   _imgFromGallery() async{
     final XFile? photo = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     setState(() {
       image = File(photo!.path);
     });
   }
+
+  _imgFromCamera() async{
+    final XFile? photo = await picker.pickImage(source: ImageSource.camera, imageQuality: 100);
+    setState(() {
+      image = File(photo!.path);
+    });
+  }
+
+  void _showPicker(context){
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext) {
+          return SafeArea(
+            child: Container(
+              padding: const EdgeInsets.all(1),
+              child: Wrap(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Pick Photo'),
+                    onTap: (){
+                      _imgFromGallery();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo_camera),
+                    title: const Text('Take Photo'),
+                    onTap: (){
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +98,22 @@ class _UploadPageState extends State<UploadPage> {
               Icons.drive_folder_upload,
               color:  Color.fromRGBO(193, 53, 132, 1)
             ),
-            onPressed: (){},
+            onPressed: (){
+              uploadNewPost();
+            },
           )
         ],
       ),
       body: Stack(
         children: [
           SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
                 GestureDetector(
                   onTap: (){
-                    _imgFromGallery();
+                    _showPicker(context);
                   },
                   child: Container(
                     width: double.infinity,
