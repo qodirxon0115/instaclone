@@ -1,10 +1,13 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
-import '../model/member _model.dart';
+import '../model/post_model.dart';
 
 class LikesPage extends StatefulWidget {
-  const LikesPage({Key? key}) : super(key: key);
+  final PageController? pageController;
+
+  const LikesPage({Key? key, this.pageController}) : super(key: key);
 
   @override
   State<LikesPage> createState() => _LikesPageState();
@@ -12,145 +15,161 @@ class LikesPage extends StatefulWidget {
 
 class _LikesPageState extends State<LikesPage> {
   bool isLoading = false;
-  var searchController = TextEditingController();
-  List<Member> items = [];
+  List<Post> items = [];
+
+  String? image_1 =
+      'https://images.unsplash.com/photo-1686092854995-b735b32187a2';
+  String? image_2 =
+      'https://images.unsplash.com/photo-1684885783404-98ade0ab49c8';
+  String? image_3 =
+      'https://images.unsplash.com/photo-1685856898185-57eb303fd776';
 
   @override
   void initState() {
     super.initState();
-    items.add(Member("Qodirxon", "kxan@gmail.com"));
-    items.add(Member("Jahongir", "jahongir@gmail.com"));
-    items.add(Member("G'iyosbek", "giyosbek@gmail.com"));
-    items.add(Member("Habibatiy", "habibatiy@gmail.com"));
-    items.add(Member("Speaker", "speaker@gmail.com"));
+    items.add(Post(image_1!, 'Best photo '));
+    items.add(Post(image_2!, 'Beautiful photo'));
+    items.add(Post(image_3!, 'Hello World'));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
-          "Search", style: TextStyle(
-            fontFamily: "Billabong", fontSize: 25,color: Colors.black),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            'Likes',
+            style: TextStyle(
+                color: Colors.black, fontFamily: 'Billabong', fontSize: 30),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                widget.pageController!.animateToPage(2,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.easeIn);
+              },
+              icon: const Icon(Icons.camera_alt),
+              color: Colors.black,
+            ),
+          ],
         ),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              children: [
-                //search box
-                Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  height: 45,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(7)
-                  ),
-                  child: TextField(
-                    style: const TextStyle(
-                        color: Colors.black87
-                    ),
-                    controller: searchController,
-                    decoration: const InputDecoration(
-                      hintText: "Search",
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(fontSize: 15, color: Colors.grey),
-                      icon: Icon(Icons.search_outlined, color: Colors.grey,),
-                    ),
-                  ),
-                ),
+        body: Stack(
+          children: [
+            ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (ctx, index) {
+                  return itemOfPost(items[index]);
+                }),
+            isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : const SizedBox.shrink(),
+          ],
+        ));
+  }
 
-                //member list
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (ctx, index){
-                        return itemOfMember(items[index]);
-                      }
-                  ),
+  Widget itemOfPost(Post post) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          const Divider(),
+
+          //user info
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: const Image(
+                        image: AssetImage("assets/images/ic_person.png"),
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text('Esonov Qodirxon',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          '2023-06-11  19:40',
+                          style: TextStyle(fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.more_horiz),
                 ),
               ],
             ),
-          )
-        ],
-      ),
-    );
-  }
+          ),
 
-  Widget itemOfMember(Member member) {
-    return Container(
-      height: 90,
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(70),
-                border: Border.all(
-                  width: 1.5,
-                  color: const Color.fromRGBO(193, 53, 132, 1),
-                )),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(22.5),
-              child: const Image(
-                image: AssetImage("assets/images/ic_person.png"),
-                width: 45,
-                height: 45,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           const SizedBox(
-            width: 15,
+            height: 8,
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+
+          //Post image
+          CachedNetworkImage(
+            width: MediaQuery.of(context).size.width,
+            imageUrl: post.imgPost,
+            placeholder: (context, url) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.cover,
+          ),
+
+          //like share
+          Row(
             children: [
-              Text(
-                member.fullName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  EvaIcons.heart,
+                  color: Colors.red,
+                ),
               ),
-              const SizedBox(
-                height: 3,
-              ),
-              Text(
-                member.email,
-                style: const TextStyle(color: Colors.black54),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  EvaIcons.shareOutline,
+                ),
               ),
             ],
           ),
 
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: (){},
-                  child: Container(
-                    width: 100,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                            width: 1,
-                            color: Colors.grey
-                        )
-                    ),
-                    child: const Center(
-                      child: Text('Follow'),
-                    ),
-                  ),
-                ),
-              ],
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            child: RichText(
+              softWrap: true,
+              overflow: TextOverflow.visible,
+              text: TextSpan(
+                text: "${post.caption}",
+                style: const TextStyle(color: Colors.black),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,5 +1,3 @@
-
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import '../model/post_model.dart';
 
 class MyFeedPage extends StatefulWidget {
   final PageController? pageController;
+
   const MyFeedPage({Key? key, this.pageController}) : super(key: key);
 
   @override
@@ -18,10 +17,12 @@ class _MyFeedPageState extends State<MyFeedPage> {
   bool isLoading = false;
   List<Post> items = [];
 
-  String? image_1 = 'https://images.unsplash.com/photo-1686092854995-b735b32187a2';
-  String? image_2 = 'https://images.unsplash.com/photo-1684885783404-98ade0ab49c8';
-  String? image_3 = 'https://images.unsplash.com/photo-1685856898185-57eb303fd776';
-
+  String? image_1 =
+      'https://images.unsplash.com/photo-1686092854995-b735b32187a2';
+  String? image_2 =
+      'https://images.unsplash.com/photo-1684885783404-98ade0ab49c8';
+  String? image_3 =
+      'https://images.unsplash.com/photo-1685856898185-57eb303fd776';
 
   @override
   void initState() {
@@ -34,44 +35,44 @@ class _MyFeedPageState extends State<MyFeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'Instagram', style: TextStyle(
-            color: Colors.black, fontFamily: 'Billabong', fontSize: 30),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            'Instagram',
+            style: TextStyle(
+                color: Colors.black, fontFamily: 'Billabong', fontSize: 30),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                widget.pageController!.animateToPage(2,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.easeIn);
+              },
+              icon: const Icon(Icons.camera_alt),
+              color: Colors.black,
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              widget.pageController!.animateToPage(
-                  2, duration: const Duration(milliseconds: 100),
-                  curve: Curves.easeIn);
-            },
-            icon: const Icon(Icons.camera_alt),
-            color: Colors.black,
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (ctx, index){
-              return itemOfPost(items[index]);
-            }
-          ),
-          isLoading ? const Center(
-            child: CircularProgressIndicator(),
-          ) : const SizedBox.shrink(),
-        ],
-      )
-    );
+        body: Stack(
+          children: [
+            ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (ctx, index) {
+                  return itemOfPost(items[index]);
+                }),
+            isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : const SizedBox.shrink(),
+          ],
+        ));
   }
 
-
-  Widget itemOfPost(Post post){
+  Widget itemOfPost(Post post) {
     return Container(
       color: Colors.white,
       child: Column(
@@ -94,33 +95,38 @@ class _MyFeedPageState extends State<MyFeedPage> {
                         height: 40,
                       ),
                     ),
-                    const SizedBox(width: 10,),
-
+                    const SizedBox(
+                      width: 10,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text('Esonov Qodirxon',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.black)),
-                        SizedBox(height:3,),
-                        Text('2023-06-11  19:40',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          '2023-06-11  19:40',
+                          style: TextStyle(fontWeight: FontWeight.normal),
                         ),
                       ],
                     )
                   ],
                 ),
-
                 IconButton(
-                    onPressed: (){},
-                    icon: const Icon(Icons.more_horiz),
+                  onPressed: () {},
+                  icon: const Icon(Icons.more_horiz),
                 ),
               ],
             ),
           ),
 
-          const SizedBox(height: 8,),
+          const SizedBox(
+            height: 8,
+          ),
 
           //Post image
           CachedNetworkImage(
@@ -137,14 +143,14 @@ class _MyFeedPageState extends State<MyFeedPage> {
           Row(
             children: [
               IconButton(
-                onPressed: (){},
+                onPressed: () {},
                 icon: const Icon(
-                  EvaIcons.heart,
+                  EvaIcons.heartOutline,
                   color: Colors.red,
                 ),
               ),
               IconButton(
-                onPressed: (){},
+                onPressed: () {},
                 icon: const Icon(
                   EvaIcons.shareOutline,
                 ),
@@ -168,5 +174,4 @@ class _MyFeedPageState extends State<MyFeedPage> {
       ),
     );
   }
-
 }

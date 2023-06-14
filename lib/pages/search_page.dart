@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import '../model/member _model.dart';
@@ -34,8 +32,9 @@ class _MySearchPageState extends State<MySearchPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         title: const Text(
-          "Search", style: TextStyle(
-            fontFamily: "Billabong", fontSize: 25,color: Colors.black),
+          "Search",
+          style: TextStyle(
+              fontFamily: "Billabong", fontSize: 25, color: Colors.black),
         ),
       ),
       body: Stack(
@@ -50,19 +49,19 @@ class _MySearchPageState extends State<MySearchPage> {
                   height: 45,
                   margin: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(7)
-                  ),
+                      color: Colors.grey.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(7)),
                   child: TextField(
-                    style: const TextStyle(
-                      color: Colors.black87
-                    ),
+                    style: const TextStyle(color: Colors.black87),
                     controller: searchController,
                     decoration: const InputDecoration(
                       hintText: "Search",
                       border: InputBorder.none,
                       hintStyle: TextStyle(fontSize: 15, color: Colors.grey),
-                      icon: Icon(Icons.search_outlined, color: Colors.grey,),
+                      icon: Icon(
+                        Icons.search_outlined,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -70,11 +69,10 @@ class _MySearchPageState extends State<MySearchPage> {
                 //member list
                 Expanded(
                   child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (ctx, index){
-                      return itemOfMember(items[index]);
-                    }
-                  ),
+                      itemCount: items.length,
+                      itemBuilder: (ctx, index) {
+                        return itemOfMember(items[index]);
+                      }),
                 ),
               ],
             ),
@@ -127,23 +125,18 @@ class _MySearchPageState extends State<MySearchPage> {
               ),
             ],
           ),
-
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
                   child: Container(
                     width: 100,
                     height: 30,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                            width: 1,
-                            color: Colors.grey
-                        )
-                    ),
+                        border: Border.all(width: 1, color: Colors.grey)),
                     child: const Center(
                       child: Text('Follow'),
                     ),
