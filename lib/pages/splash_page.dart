@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:instaclone/pages/home_page.dart';
 import 'package:instaclone/pages/signin_page.dart';
+import 'package:instaclone/service/auth_service.dart';
 
 class SplashPage extends StatefulWidget {
   static const String id = "splash_page";
+
   const SplashPage({Key? key}) : super(key: key);
 
   @override
@@ -12,7 +15,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -20,14 +22,18 @@ class _SplashPageState extends State<SplashPage> {
     _initTimer();
   }
 
-  _initTimer(){
-    Timer(const Duration(seconds: 2), (){
-      _callSignInPage();
+  _initTimer() {
+    Timer(const Duration(seconds: 2), () {
+      callNextPage();
     });
   }
 
-  _callSignInPage(){
-    Navigator.pushReplacementNamed(context, SignInPage.id);
+  callNextPage() {
+    if (AuthService.isLoggedIn()) {
+      Navigator.pushReplacementNamed(context, HomePage.id);
+    } else {
+      Navigator.pushReplacementNamed(context, SignInPage.id);
+    }
   }
 
   @override
@@ -36,26 +42,36 @@ class _SplashPageState extends State<SplashPage> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
               Color.fromRGBO(193, 53, 132, 1),
               Color.fromRGBO(131, 58, 180, 1),
-            ]
-          )
-        ),
+            ])),
         child: Column(
           children: const [
             Expanded(
               child: Center(
-                child: Text("Instagram",
-                  style: TextStyle(color: Colors.white, fontSize: 45, fontFamily: "Billabong"),),
+                child: Text(
+                  "Instagram",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 45,
+                      fontFamily: "Billabong"),
+                ),
               ),
             ),
-            Text("All rights reserved",
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
-            SizedBox(height: 20,),
+            Text(
+              "All rights reserved",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

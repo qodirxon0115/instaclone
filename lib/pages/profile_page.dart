@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instaclone/service/auth_service.dart';
 
 import '../model/post_model.dart';
 
@@ -97,7 +98,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Colors.black, fontFamily: "Billabong", fontSize: 25)),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                AuthService.signOutUser(context);
+              },
               icon: const Icon(Icons.exit_to_app),
               color: Colors.black,
             )
